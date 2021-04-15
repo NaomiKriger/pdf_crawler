@@ -9,7 +9,7 @@ from pdfminer.pdfpage import PDFPage
 from .phone import PhoneModel
 from ..db import db
 
-phone_pattern_regex = re.compile(".*?(\(?\d{3})? ?[\.-]? ?\d{3} ?[\.-]? ?\d{4}.*?", re.S)
+phone_pattern_regex = r"([0-9]{3})[-.]?([0-9]{3})[-.]?([0-9]{4})"
 
 
 class PdfModel(db.Model):
@@ -72,13 +72,13 @@ class PdfModel(db.Model):
         retstr.close()
         return text
 
-    def extract_phones_from_pdf(self, pdf_path):
+    @staticmethod
+    def extract_phones_from_pdf(pdf_path):
         pdf_text = PdfModel.convert_pdf_to_txt(pdf_path)
 
-        """this method crawls over the PDF and returns a list / set of all the phone numbers found in it"""
-        if 'a' == 1:  # temp logic to remove PyCharm warning
-            b = self.phones
-        return []
+        matches = re.findall(phone_pattern_regex, pdf_text)
+        phones = [''.join(match) for match in matches]
+        return phones
 
     def save_phone_in_pdf_to_db(self, pdf_path):
         phones = self.extract_phones_from_pdf(pdf_path)
