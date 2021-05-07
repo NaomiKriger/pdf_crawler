@@ -1,10 +1,11 @@
 # # from models.pdf import PdfModel
+import io
 import re
 from pathlib import Path
-import io
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 
 folder_path = Path("C:", "/", "repositories", "pdfs_for_crawler", "file_2.pdf")
@@ -40,5 +41,5 @@ file_as_string = convert_pdf_to_txt(str(folder_path))
 print(file_as_string)
 
 matches = re.findall(phone_pattern_regex, file_as_string)
-phones = [''.join(match) for match in matches] # not converting to int since this would remove the preceding 0
+phones = [''.join(match) for match in matches]  # not converting to int since this would remove the preceding 0
 print(phones)

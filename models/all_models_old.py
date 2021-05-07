@@ -32,11 +32,12 @@
 #
 #     id = db.Column(db.Integer, primary_key=True)
 #     name = db.Column(db.String(80))
-#     phones = relationship("PhoneModel", secondary=association_table, back_populates="pdfs")
+#     phones = relationship("PhoneModel", secondary=association_table, backref="pdfs")
+#     foreign_keys = [association_table.c.phones_id, association_table.c.pdfs_id]
 #
-#     def __init__(self, name, phones):
-#         self.name = name
-#         self.phones = phones
+# def __init__(self, name, phones):
+#     self.name = name
+#     self.phones = phones
 #
 #     def json(self):
 #         return {'id': self.id,
@@ -97,3 +98,28 @@
 #         for phone in phones:
 #             db.session.add(phone)
 #         db.session.commit()
+#
+#
+# class PhoneModel(db.Model):
+#     __tablename__ = 'phones'
+#
+#     id = db.Column(db.Integer, primary_key=True)
+#     phone_number = db.Column(db.Integer)
+#     # pdfs = relationship("PdfModel", secondary=association_table, backref="phones")
+#
+#     def __init__(self, name, phone_number, pdfs):
+#         self.name = name
+#         self.phone_number = phone_number
+#         self.pdfs = pdfs
+#
+#     def json(self):
+#         return {'id': self.id,
+#                 'phone_number': self.phone_number,
+#                 'pdfs': self.pdfs}
+#
+#     @classmethod
+#     def find_all(cls):
+#         return cls.query.all()
+#
+#     def extract_phone_from_pdf(self, pdf):
+#         pass
