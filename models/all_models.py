@@ -111,9 +111,3 @@ class PhoneModel(db.Model):
 
     def find_pdfs(self):
         return self.query.filter_by(phone_number=self.phone_number).all()
-
-    def json(self):  # TODO: resolve this
-        # return {'phone': self.phone_number, 'pdfs': [pdf for pdf in self.pdfs]}
-        # return {'phone': self.phone_number, 'pdfs': [self.query.filter_by(pdfs=pdfs).find_all()]}
-        # return {'phone': self.phone_number}
-        return {'phone': self.phone_number, 'pdfs': str(PdfModel.pdfs_by_phones(self.phone_number))}
