@@ -1,20 +1,19 @@
-from sqlalchemy.orm import relationship
-
 from db import db
 
-# from temp_test import phone_pattern_regex
-
-association_table_2 = db.Table('association', db.Model.metadata,
-                               db.Column('pdfs_id', db.Integer, db.ForeignKey('pdfs.id')),
-                               db.Column('phones_id', db.Integer, db.ForeignKey('phones.id'))
-                               )
+association_table = db.Table('association', db.Model.metadata,
+                             db.Column('pdfs_id', db.Integer, db.ForeignKey('pdfs.id')),
+                             db.Column('phones_id', db.Integer, db.ForeignKey('phones.id'))
+                             )
 
 
 class PdfModel(db.Model):
     __tablename__ = 'pdfs'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
-    phones = relationship("PhoneModel", secondary=association_table_2)
+    phones = db.relationship("PhoneModel", secondary=association_table, backref='pdfs')
+
+    # , backref=db.backref('connections'),
+    #                      lazy='dynamic')
 
     def __init__(self, name, phones):
         self.name = name
@@ -35,6 +34,10 @@ class PdfModel(db.Model):
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
+
+    @classmethod
+    def pdfs_by_phones(cls, phone):
+        return cls.query.filter_by(phone in cls.phones).all()  # TODO: resolve this
 
     def json(self):
         return {'name': self.name, 'phones': [str(p) for p in self.phones]}
@@ -89,3 +92,28 @@ class PhoneModel(db.Model):
 
     def __str__(self):
         return f'<PhoneModel - {self.phone_number}>'
+
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()
+
+    @classmethod
+    def find_by_name(cls, phone):
+        return cls.query.filter_by(phone=phone).first()
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def find_pdfs(self):
+        return self.query.filter_by(phone_number=self.phone_number).all()
+
+    def json(self):  # TODO: resolve this
+        # return {'phone': self.phone_number, 'pdfs': [pdf for pdf in self.pdfs]}
+        # return {'phone': self.phone_number, 'pdfs': [self.query.filter_by(pdfs=pdfs).find_all()]}
+        # return {'phone': self.phone_number}
+        return {'phone': self.phone_number, 'pdfs': str(PdfModel.pdfs_by_phones(self.phone_number))}
