@@ -50,14 +50,9 @@ class PhoneList(Resource):
         for phone in phones:
             pdf_names = [pdf.name for pdf in phone.pdfs]
             result[phone.phone_number].extend(pdf_names)
+        for phone_key in result:
+            result[phone_key] = sorted(result[phone_key])
         return result
 
 
 # TODO: remember - defaultdict & enumerate
-
-'''
-{
-'123': ('pdf1', 'pdf2', 'pdf3'),
-'145': ('pdf4', 'pdf2', 'pdf6')
-}
-'''

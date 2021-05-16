@@ -20,18 +20,9 @@ def create_tables():
     db.create_all()
 
 
-# TODO: resolve the warning for the decorator below
-# @jwt.user_claims_loader
-# def add_claims_to_jwt(identity):
-#     if identity == 1: # instead of hard coding, should read from a config file or a database
-#         return {'is_admin': True}
-#     return {'is_admin': False}
-
 api.add_resource(Pdf, '/pdf/<string:name>')
 api.add_resource(PdfList, '/pdfs')
 api.add_resource(PhoneList, '/phones')
-
-# api.add_resource(Documentation, '/parents/<string:name>')
 
 if __name__ == '__main__':
     app.run(debug=True)
