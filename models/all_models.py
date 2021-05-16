@@ -1,6 +1,5 @@
 import io
 import re
-from pathlib import Path
 
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
@@ -9,7 +8,6 @@ from pdfminer.pdfpage import PDFPage
 
 from db import db
 
-folder_path = Path("C:", "/", "repositories", "pdfs_for_crawler", "file_2.pdf")
 phone_pattern_regex = r"([0-9]{3})[-.]?([0-9]{3})[-.]?([0-9]{4})"
 
 association_table = db.Table('association', db.Model.metadata,
@@ -50,7 +48,7 @@ class PdfModel(db.Model):
 
     @classmethod
     def pdfs_by_phones(cls, phone):
-        return cls.query.filter_by(phone in cls.phones).all()  # TODO: resolve this
+        return cls.query.filter_by(phone in cls.phones).all()
 
     def json(self):
         return {'name': self.name, 'phones': [str(p) for p in self.phones]}
@@ -87,12 +85,6 @@ class PdfModel(db.Model):
         matches = re.findall(phone_pattern_regex, pdf_text)
         phones = [''.join(match) for match in matches]
         return phones
-
-    # def save_phone_in_pdf_to_db(self, pdf_path):
-    #     phones = self.extract_phones_from_pdf(pdf_path)
-    #     for phone in phones:
-    #         db.session.add(phone)
-    #     db.session.commit()
 
 
 class PhoneModel(db.Model):

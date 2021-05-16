@@ -24,16 +24,6 @@ class Pdf(Resource):
         phone_numbers = [PhoneModel(phone_number) for phone_number in phones_from_pdf]
         pdf = PdfModel(name, phone_numbers)
 
-        # @classmethod
-        # def post(cls, name):
-        #     if PdfModel.find_by_name(name):
-        #         return {'message': f'pdf {name} already exists'}
-        #     data = request.get_json()
-        #     phone_numbers = [PhoneModel(phone_number) for phone_number in data['phones']]
-        #     print('data = ', data)
-        #     print(f'phone_numbers = {[str(p) for p in phone_numbers]}')
-        #     pdf = PdfModel(name, phone_numbers)
-
         try:
             pdf.save_to_db()
         except Exception as e:

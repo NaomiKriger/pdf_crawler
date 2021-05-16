@@ -46,13 +46,10 @@ class PhoneList(Resource):
     @classmethod
     def get(cls):
         result = defaultdict(list)
-        phones = [phone for phone in PhoneModel.query.all()]  # PhoneModel[index] // PhoneModel.query.all()[index]
+        phones = [phone for phone in PhoneModel.query.all()]
         for phone in phones:
             pdf_names = [pdf.name for pdf in phone.pdfs]
             result[phone.phone_number].extend(pdf_names)
         for phone_key in result:
             result[phone_key] = sorted(result[phone_key])
         return result
-
-
-# TODO: remember - defaultdict & enumerate

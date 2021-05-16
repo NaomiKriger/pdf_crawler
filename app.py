@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_restful import Api
 
-# from resources.documentation_example import Documentation
 from db import db
 from resources.pdf import Pdf, PdfList
 from resources.phone import PhoneList
