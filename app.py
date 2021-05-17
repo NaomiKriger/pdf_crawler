@@ -8,7 +8,6 @@ from resources.phone import PhoneList, Phone
 app = Flask(__name__)
 app.config['SQL_ALCHEMY_DATABASE_URI'] = 'sqlite://data.sb'
 app.config['SQL_ALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = 'jose'
 api = Api(app)
 
 db.init_app(app)
