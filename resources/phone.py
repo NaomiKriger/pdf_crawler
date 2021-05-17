@@ -9,16 +9,16 @@ from models.all_models import PhoneModel
 class Phone(Resource):
 
     @classmethod
-    def get(cls, phone):
+    def get(cls, phone) -> tuple:
         phone = PhoneModel.find_by_phone(phone)
         if phone:
             return phone.json()
-        return {'message': f'pdf {phone} was not found'}, 404
+        return {'message': f'phone {phone} was not found'}, 404
 
     @classmethod
-    def post(cls, phone):
+    def post(cls, phone) -> tuple:
         if PhoneModel.find_by_name(phone):
-            return {'message': f'pdf {phone} already exists'}
+            return {'message': f'pdf {phone} already exists'}, 400
         data = request.get_json()
         pdfs = [PhoneModel(pdf) for pdf in data['pdfs']]
         print('data = ', data)
@@ -33,7 +33,7 @@ class Phone(Resource):
         return pdf.json(), 201
 
     @classmethod
-    def delete(cls, phone):
+    def delete(cls, phone) -> tuple:
         phone = PhoneModel.find_by_phone(phone)
         if not phone:
             return {'message': f'phone {phone} was not found'}, 404
@@ -44,7 +44,7 @@ class Phone(Resource):
 class PhoneList(Resource):
 
     @classmethod
-    def get(cls):
+    def get(cls) -> dict:
         result = defaultdict(list)
         phones = [phone for phone in PhoneModel.query.all()]
         for phone in phones:

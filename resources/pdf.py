@@ -7,18 +7,18 @@ from models.all_models import PdfModel, PhoneModel
 class Pdf(Resource):
 
     @classmethod
-    def get(cls, name):
+    def get(cls, name) -> tuple:
         pdf = PdfModel.find_by_name(name)
         if pdf:
             return pdf.json()
         return {'message': f'pdf {name} was not found'}, 404
 
     @classmethod
-    def post(cls, name):
+    def post(cls, name) -> tuple:
         data = request.get_json()
         path = data['path']
         if PdfModel.find_by_name(name):
-            return {'message': f'pdf {name} already exists'}
+            return {'message': f'pdf {name} already exists'}, 400
 
         phones_from_pdf = PdfModel.extract_phones_from_pdf(path)
         phone_numbers = [PhoneModel(phone_number) for phone_number in phones_from_pdf]
@@ -32,7 +32,7 @@ class Pdf(Resource):
         return pdf.json(), 201
 
     @classmethod
-    def delete(cls, name):
+    def delete(cls, name) -> tuple:
         pdf = PdfModel.find_by_name(name)
         if not pdf:
             return {'message': f'pdf {name} was not found'}, 404
@@ -43,7 +43,7 @@ class Pdf(Resource):
 class PdfList(Resource):
 
     @classmethod
-    def get(cls):
+    def get(cls) -> dict:
         pdfs = [pdf.json() for pdf in PdfModel.find_all()]
         sorted_pdfs_list = sorted([pdf for pdf in pdfs], key=lambda k: k['name'])
         return {'pdf list': sorted_pdfs_list}
