@@ -2,8 +2,8 @@ from flask import Flask
 from flask_restful import Api
 
 from db import db
-from resources.pdf import Pdf, PdfList
-from resources.phone import PhoneList, Phone
+from src.resources.pdf import Pdf, PdfList
+from src.resources.phone import Phone, PhoneList
 
 app = Flask(__name__)
 app.config['SQL_ALCHEMY_DATABASE_URI'] = 'sqlite://data.sb'

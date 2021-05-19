@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
 
-from models.all_models import PdfModel, PhoneModel
+from src.models.all_models import PdfModel, PhoneModel
 
 
 class Pdf(Resource):

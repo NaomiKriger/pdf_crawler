@@ -3,16 +3,16 @@ from collections import defaultdict
 from flask import request
 from flask_restful import Resource
 
-from models.all_models import PhoneModel
+from src.models.all_models import PhoneModel
 
 
 class Phone(Resource):
 
     @classmethod
     def get(cls, phone) -> tuple:
-        phone = PhoneModel.find_by_phone(phone)
-        if phone:
-            return phone.json()
+        phone_object = PhoneModel.find_by_phone(phone)
+        if phone_object:
+            return phone_object.json()
         return {'message': f'phone {phone} was not found'}, 404
 
     @classmethod
