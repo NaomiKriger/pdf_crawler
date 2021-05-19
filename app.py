@@ -23,5 +23,6 @@ api.add_resource(Phone, '/phone/<string:phone>')
 api.add_resource(PdfList, '/pdfs')
 api.add_resource(PhoneList, '/phones')
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

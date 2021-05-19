@@ -1,6 +1,5 @@
 from collections import defaultdict
 
-from flask import request
 from flask_restful import Resource
 
 from src.models.all_models import PhoneModel
@@ -19,10 +18,6 @@ class Phone(Resource):
     def post(cls, phone) -> tuple:
         if PhoneModel.find_by_name(phone):
             return {'message': f'pdf {phone} already exists'}, 400
-        data = request.get_json()
-        pdfs = [PhoneModel(pdf) for pdf in data['pdfs']]
-        print('data = ', data)
-        print(f'pdfs = {[str(p) for p in pdfs]}')
         pdf = PhoneModel(phone)
 
         try:

@@ -15,8 +15,7 @@ class Pdf(Resource):
 
     @classmethod
     def post(cls, name) -> tuple:
-        data = request.get_json()
-        path = data['path']
+        path = request.get_json()['path']
         if PdfModel.find_by_name(name):
             return {'message': f'pdf {name} already exists'}, 400
 
