@@ -1,5 +1,6 @@
 # Welcome to pdf_crawler!
-This is a RESTful API project, developed in Python/Flask, which enables you to upload PDF files, and get/delete the data that was extracted from these files by using HTTP requests.
+This is a RESTful API project, developed in Python/Flask and uses SQLAlchemy.
+The app enables you to upload PDF files, and get/delete the data that was extracted from these files by using HTTP requests.
 
 ## General Logic / Flow
 The app expects the receive PDF files, where each PDF file contains text including phone number(s).
@@ -42,8 +43,7 @@ We can also trigger DELETE requests in order to delete a specific phone number o
 
 ```curl --location --request GET 'http://localhost:5000/pdfs' \ --data-raw '' ```
 
-The app was developed in Python, using Flask and SQLAlchemy.
-I hope you will find it useful.
+I hope you will find this app useful.
 
 Thanks,
 Naomi
